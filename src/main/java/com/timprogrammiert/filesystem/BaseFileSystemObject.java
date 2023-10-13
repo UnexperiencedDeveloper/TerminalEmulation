@@ -1,18 +1,33 @@
 package com.timprogrammiert.filesystem;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author tmatz
  */
 public abstract class BaseFileSystemObject {
-    private Map<String, BaseFileSystemObject> children;
+    private final Map<String, BaseFileSystemObject> children;
+    private BaseFileSystemObject parent;
     private String name;
 
     public BaseFileSystemObject(String name){
         this.children = new HashMap<>();
         this.name = name;
+        parent = null;
+    }
+
+    public BaseFileSystemObject(BaseFileSystemObject parent, String name) {
+        this.children = new HashMap<>();
+        this.parent = parent;
+        this.name = name;
+    }
+
+    public BaseFileSystemObject getSpecificChildren(String childrenName){
+        return children.get(childrenName);
+    }
+
+    public Collection<BaseFileSystemObject> getAllChilldren(){
+        return children.values();
     }
 
     public String getName(){
@@ -24,6 +39,7 @@ public abstract class BaseFileSystemObject {
 
     public void addNewDirectory(BaseFileSystemObject dirToAdd){
         if(this instanceof DirectoryObject){
+            dirToAdd.setParent(this);
             children.put(dirToAdd.getName(), dirToAdd);
         }else {
             throw new UnsupportedOperationException(this.getName() + " is a File");
@@ -36,5 +52,13 @@ public abstract class BaseFileSystemObject {
         }else {
             throw new UnsupportedOperationException(this.getName() + " is a File");
         }
+    }
+
+    public BaseFileSystemObject getParent(){
+        return parent;
+    }
+
+    private void setParent(BaseFileSystemObject parentObject){
+        this.parent = parentObject;
     }
 }

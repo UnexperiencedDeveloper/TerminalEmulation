@@ -5,6 +5,9 @@ package com.timprogrammiert.filesystem;
  */
 public class DirectoryObject extends BaseFileSystemObject {
 
+    public DirectoryObject(String name, BaseFileSystemObject parent) {
+        super(parent,name);
+    }
     public DirectoryObject(String name) {
         super(name);
     }
