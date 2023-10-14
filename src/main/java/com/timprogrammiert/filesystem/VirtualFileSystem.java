@@ -8,19 +8,21 @@ import com.timprogrammiert.util.DirectoryInfo;
 public class VirtualFileSystem {
     String[] fileSystemStructure = new String[]{"etc", "var", "home"};
     BaseFileSystemObject rootObject;
-    BaseFileSystemObject testDirectory;
 
     public VirtualFileSystem() {
         rootObject = new DirectoryObject("/");
-        testDirectory = new DirectoryObject("test", rootObject.getSpecificChildren("etc"));
         createFileSystemStructure();
     }
 
     private void createFileSystemStructure(){
-        for (String dirName: fileSystemStructure) {
-            rootObject.addNewDirectory(new DirectoryObject(dirName, rootObject));
-        }
-        rootObject.getSpecificChildren("etc").addNewDirectory(testDirectory);
+        BaseFileSystemObject etcDir = new DirectoryObject("etc", rootObject);
+        BaseFileSystemObject varDir = new DirectoryObject("var", rootObject);
+        BaseFileSystemObject homeDir = new DirectoryObject("home", rootObject);
+        rootObject.addNewDirectory(etcDir);
+        rootObject.addNewDirectory(varDir);
+        rootObject.addNewDirectory(homeDir);
+        BaseFileSystemObject testDirectory = new DirectoryObject("test", etcDir);
+        etcDir.addNewDirectory(testDirectory);
     }
 
     public BaseFileSystemObject getRootFileSystem(){
