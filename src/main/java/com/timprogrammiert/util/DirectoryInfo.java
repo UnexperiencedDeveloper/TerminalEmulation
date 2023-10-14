@@ -1,7 +1,6 @@
 package com.timprogrammiert.util;
 
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
-import com.timprogrammiert.filesystem.DirectoryObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
