@@ -10,6 +10,11 @@ public class FileObject extends BaseFileSystemObject{
         this.content = content;
     }
 
+    public FileObject(String name, String content, BaseFileSystemObject parent) {
+        super(parent, name);
+        this.content = content;
+    }
+
     public String getContent(){
         return content;
     }
