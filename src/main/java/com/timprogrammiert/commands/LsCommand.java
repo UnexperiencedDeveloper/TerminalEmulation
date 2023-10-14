@@ -12,41 +12,43 @@ import java.util.List;
  * @author tmatz
  */
 public class LsCommand{
-
-    private static Host host;
     public static void execute(String[] args, Host userHost){
-        host = userHost;
-        // ls testfile -> children aus aktuellen directory, dessen children anzeigen
-        // ls /test/etc/testfile -> absoluter pfad, childen anzeigen
-        // ls -al {beide varianten} -> alles zeige + aufgelistet
-        if(args[0].startsWith("/")){
+        if(args.length == 0){
+            listAllChildren(userHost.getCurrentDirectory());
+        }
+        else if(args[0].equals("/")){
+            // LS COMMAND ON ROOT DIRECTORY
+            listAllChildren(userHost.getRootFileSystem());
+        }
+
+        else if(args[0].startsWith("/")){
             // Absoluter pfad
             String absPath = args[0];
             String[] subDirectoriesStrings =  absPath.split("/");
             List<String> subDirectories = new ArrayList<>(Arrays.asList(subDirectoriesStrings));
-            test(getFileSystemByAbsolutPath(subDirectories));
+            listAllChildren(getFileSystemByAbsolutPath(subDirectories, userHost));
         }
 
     }
 
     /**
      *
-     * @param subDir
+     * @param subDir List of subDirectories names
      * @return Requested Directory by absolute Path
+     * Takes in a List of subDirectories names, returns the last Folder in the provided Path
      */
-    private static BaseFileSystemObject getFileSystemByAbsolutPath(List<String> subDir){
+    private static BaseFileSystemObject getFileSystemByAbsolutPath(List<String> subDir, Host host){
         // TODO CHECK IF IS DIRECTORY OR FILE (CHECK ALREADY AVAILABLE, JUST USE THE INFORMATION)
-        subDir.remove(0);
+        subDir.remove(0); // empty String on Position 0
         BaseFileSystemObject directory = host.getRootFileSystem();
         for (String subDirectory: subDir) {
-            directory = directory.getSpecificChildren("etc");
-            System.out.println(directory.getName());
+            directory = directory.getSpecificChildren(subDirectory);
+
         }
         return directory;
     }
 
-    // Irelevant -> just for Testing Logic
-    private static void test(BaseFileSystemObject testItem){
+    private static void listAllChildren(BaseFileSystemObject testItem){
         Collection<BaseFileSystemObject> children = testItem.getAllChilldren();
         for (BaseFileSystemObject object: children) {
             System.out.println(object.getName());
