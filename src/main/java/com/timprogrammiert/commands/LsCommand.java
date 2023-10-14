@@ -11,24 +11,27 @@ import java.util.List;
 /**
  * @author tmatz
  */
-public class LsCommand{
-    public static void execute(String[] args, Host userHost){
+public class LsCommand implements  ICommand{
+    @Override
+    public void execute(String[] args, Host userHost){
         if(args.length == 0){
+            // list current directory
             listAllChildren(userHost.getCurrentDirectory());
-        }
-        else if(args[0].equals("/")){
-            // LS COMMAND ON ROOT DIRECTORY
+        }  else if(args[0].equals("/")){
+            // list root directory
             listAllChildren(userHost.getRootFileSystem());
         }
 
         else if(args[0].startsWith("/")){
-            // Absoluter pfad
+            // list aboslute path directory
             String absPath = args[0];
             String[] subDirectoriesStrings =  absPath.split("/");
             List<String> subDirectories = new ArrayList<>(Arrays.asList(subDirectoriesStrings));
             listAllChildren(getFileSystemByAbsolutPath(subDirectories, userHost));
+        } else {
+            // list relative path
+            listAllChildren(userHost.getCurrentDirectory().getSpecificChildren(args[0]));
         }
-
     }
 
     /**
@@ -37,7 +40,7 @@ public class LsCommand{
      * @return Requested Directory by absolute Path
      * Takes in a List of subDirectories names, returns the last Folder in the provided Path
      */
-    private static BaseFileSystemObject getFileSystemByAbsolutPath(List<String> subDir, Host host){
+    private BaseFileSystemObject getFileSystemByAbsolutPath(List<String> subDir, Host host){
         // TODO CHECK IF IS DIRECTORY OR FILE (CHECK ALREADY AVAILABLE, JUST USE THE INFORMATION)
         subDir.remove(0); // empty String on Position 0
         BaseFileSystemObject directory = host.getRootFileSystem();
@@ -48,7 +51,7 @@ public class LsCommand{
         return directory;
     }
 
-    private static void listAllChildren(BaseFileSystemObject testItem){
+    private void listAllChildren(BaseFileSystemObject testItem){
         Collection<BaseFileSystemObject> children = testItem.getAllChilldren();
         for (BaseFileSystemObject object: children) {
             System.out.println(object.getName());
