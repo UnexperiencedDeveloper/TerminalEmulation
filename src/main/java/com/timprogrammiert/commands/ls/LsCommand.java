@@ -1,10 +1,13 @@
-package com.timprogrammiert.commands;
+package com.timprogrammiert.commands.ls;
 
+import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.exceptions.FileNotExistsException;
 import com.timprogrammiert.exceptions.NotADirectoryException;
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
 import com.timprogrammiert.filesystem.DirectoryObject;
 import com.timprogrammiert.host.Host;
+import com.timprogrammiert.util.DirectoryInfo;
+import com.timprogrammiert.util.PathResolver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +17,7 @@ import java.util.List;
 /**
  * @author tmatz
  */
-public class LsCommand implements  ICommand{
+public class LsCommand implements ICommand {
     private boolean detailedList = false;
     private Host host;
     @Override
@@ -24,9 +27,9 @@ public class LsCommand implements  ICommand{
             List<String> argList = parseArgumentsForTags(new ArrayList<>(Arrays.asList(args)));
 
             if(argList.isEmpty()){
-                listAllChildren(userHost.getCurrentDirectory());
+                listCurrentDirectory();
             }  else if(argList.get(0).equals("/")){
-                listAllChildren(userHost.getRootFileSystem());
+                listRootDirectory();
             }
             else if(argList.get(0).startsWith("/")){
                 resolveTargetDirectory(argList);
@@ -44,24 +47,27 @@ public class LsCommand implements  ICommand{
 
     }
 
+
+    private void listCurrentDirectory() throws NotADirectoryException, FileNotExistsException {
+        listAllChildren(host.getCurrentDirectory());
+    }
+    private void listRootDirectory() throws NotADirectoryException, FileNotExistsException {
+        listAllChildren(host.getRootFileSystem());
+    }
     private void resolveTargetDirectory(List<String> argList) throws NotADirectoryException, FileNotExistsException {
-        String absPath = argList.get(0);
-        String[] subDirectoriesStrings =  absPath.split("/");
-        List<String> subDirectories = new ArrayList<>(Arrays.asList(subDirectoriesStrings));
-        listAllChildren(getFileSystemByAbsolutPath(subDirectories, host));
+        List<String> subDirectories = DirectoryInfo.pathToArray(argList.get(0));
+        listAllChildren(DirectoryInfo.getFileSystemByAbsolutPath(subDirectories, host));
     }
-
     private void resolveSingleRelativePath(List<String> argList) throws NotADirectoryException, FileNotExistsException {
-        listAllChildren(host.getCurrentDirectory().getSpecificChildren(argList.get(0)));
+        listAllChildren(PathResolver.resolveSingleRelativePath(argList.get(0), host));
     }
 
+    /**
+     * Used to list Files with a Relative Path of multiple Directories
+     */
     private void resolveMultiRelativePath(List<String> argList) throws NotADirectoryException, FileNotExistsException {
-        String[] subDirectoriesStrings = argList.get(0).split("/");
-        BaseFileSystemObject recursiveDir = host.getCurrentDirectory();
-        for (String dirName: subDirectoriesStrings) {
-            recursiveDir = recursiveDir.getSpecificChildren(dirName);
-        }
-        listAllChildren(recursiveDir);
+
+        listAllChildren(PathResolver.resolveMultiRelativePath(argList, host));
     }
 
     private List<String> parseArgumentsForTags(List<String> argList){
@@ -72,33 +78,6 @@ public class LsCommand implements  ICommand{
         return argList;
     }
 
-
-
-    /**
-     *
-     * @param subDir List of subDirectories names
-     * @return Requested Directory by absolute Path
-     * Takes in a List of subDirectories names, returns the last Folder in the provided Path
-     */
-    private BaseFileSystemObject getFileSystemByAbsolutPath(List<String> subDir, Host host) throws FileNotExistsException,
-            NotADirectoryException{
-        if(subDir.get(0).isEmpty()) subDir.remove(0); // empty String on Position 0
-        BaseFileSystemObject directory = host.getRootFileSystem();
-        try {
-            for (String subDirectory: subDir) {
-                directory = directory.getSpecificChildren(subDirectory);
-                if(!(directory instanceof DirectoryObject)){
-                    throw new NotADirectoryException(directory.getName());
-                }
-            }
-            return directory;
-        }
-        catch (NullPointerException e)
-        {
-            throw new FileNotExistsException();
-        }
-
-    }
 
     private void listAllChildren(BaseFileSystemObject baseItem) throws NotADirectoryException, FileNotExistsException {
         try {
@@ -114,8 +93,6 @@ public class LsCommand implements  ICommand{
         }catch (NullPointerException e){
             throw new FileNotExistsException();
         }
-
-
     }
 
     private void printInformation(String information){
