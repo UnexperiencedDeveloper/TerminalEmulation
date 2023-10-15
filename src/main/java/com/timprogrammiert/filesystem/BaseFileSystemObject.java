@@ -1,5 +1,7 @@
 package com.timprogrammiert.filesystem;
 
+import com.timprogrammiert.exceptions.NotADirectoryException;
+
 import java.util.*;
 
 /**
@@ -22,8 +24,13 @@ public abstract class BaseFileSystemObject {
         this.name = name;
     }
 
-    public BaseFileSystemObject getSpecificChildren(String childrenName){
-        return children.get(childrenName);
+    public BaseFileSystemObject getSpecificChildren(String childrenName) throws NotADirectoryException {
+        if(this instanceof DirectoryObject){
+            return children.get(childrenName);
+        }else {
+            throw new NotADirectoryException(this.getName());
+        }
+
     }
 
     public Collection<BaseFileSystemObject> getAllChilldren(){
