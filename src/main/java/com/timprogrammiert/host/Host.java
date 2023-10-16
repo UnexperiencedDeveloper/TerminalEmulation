@@ -1,7 +1,11 @@
 package com.timprogrammiert.host;
 
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
+import com.timprogrammiert.filesystem.DirectoryObject;
 import com.timprogrammiert.filesystem.VirtualFileSystem;
+import com.timprogrammiert.user.User;
+
+import java.util.List;
 
 /**
  * @author tmatz
@@ -9,6 +13,8 @@ import com.timprogrammiert.filesystem.VirtualFileSystem;
 public class Host {
     private final VirtualFileSystem virtualFileSystem;
     private BaseFileSystemObject currentDirectory;
+    private List<User> users;
+    private User currentUser;
 
     public Host() {
         virtualFileSystem = new VirtualFileSystem();
@@ -17,8 +23,8 @@ public class Host {
         currentDirectory = virtualFileSystem.getRootFileSystem();
     }
 
-    public BaseFileSystemObject getCurrentDirectory() {
-        return currentDirectory;
+    public DirectoryObject getCurrentDirectory() {
+        return (DirectoryObject) currentDirectory;
     }
 
     public void setCurrentDirectory(BaseFileSystemObject currentDirectory){

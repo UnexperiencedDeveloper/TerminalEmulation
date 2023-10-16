@@ -43,8 +43,10 @@ public class DirectoryInfo {
     }
 
     /**
-     *
-     * @param subDir List of subDirectories names
+     * Each SubPath is resolved to its BaseFileSystemObject, and its children and so on.
+     * If the provided Children Path Contains a FileObject which is not the target of the path, Exception
+     * will be thrown
+     * @param subDir List of subDirectories names like ['path', 'to', 'file' ]
      * @return Requested Directory by absolute Path
      * Takes in a List of subDirectories names, returns the last Folder in the provided Path
      */
