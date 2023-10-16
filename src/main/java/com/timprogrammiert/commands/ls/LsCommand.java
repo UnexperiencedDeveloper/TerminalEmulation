@@ -76,13 +76,11 @@ public class LsCommand implements ICommand {
         }
         return argList;
     }
-
-
     private void listAllChildren(BaseFileSystemObject baseItem) throws NotADirectoryException, FileNotExistsException {
         try {
-            if(baseItem instanceof DirectoryObject)
+            if(baseItem instanceof DirectoryObject baseDirectory)
             {
-                Collection<BaseFileSystemObject> children = baseItem.getAllChilldren();
+                Collection<BaseFileSystemObject> children = baseDirectory.getAllChilldren();
                 for (BaseFileSystemObject object: children) {
                     printInformation(object.getName());
                 }
@@ -92,6 +90,7 @@ public class LsCommand implements ICommand {
         }catch (NullPointerException e){
             throw new FileNotExistsException();
         }
+
     }
 
     private void printInformation(String information){

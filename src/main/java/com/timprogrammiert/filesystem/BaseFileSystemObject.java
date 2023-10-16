@@ -9,7 +9,7 @@ import java.util.*;
  * @author tmatz
  */
 public abstract class BaseFileSystemObject {
-    private final Map<String, BaseFileSystemObject> children;
+    public final Map<String, BaseFileSystemObject> children;
     private BaseFileSystemObject parent;
     private String name;
 
@@ -45,6 +45,7 @@ public abstract class BaseFileSystemObject {
         this.name = name;
     }
 
+    /*
     public void addNewDirectory(BaseFileSystemObject dirToAdd){
         if(this instanceof DirectoryObject){
             dirToAdd.setParent(this);
@@ -52,21 +53,21 @@ public abstract class BaseFileSystemObject {
         }else {
             throw new UnsupportedOperationException(this.getName() + " is a File");
         }
-    }
-
+    }*/
+/*
     public void addNewFile(BaseFileSystemObject fileToAdd) {
         if(this instanceof DirectoryObject){
             children.put(fileToAdd.getName(), fileToAdd);
         }else {
             throw new UnsupportedOperationException(this.getName() + " is a File");
         }
-    }
+    }*/
 
     public BaseFileSystemObject getParent(){
         return parent;
     }
 
-    private void setParent(BaseFileSystemObject parentObject){
+    public void setParent(BaseFileSystemObject parentObject){
         this.parent = parentObject;
     }
 }
