@@ -1,5 +1,6 @@
 package com.timprogrammiert.filesystem;
 
+import com.timprogrammiert.exceptions.FileNotExistsException;
 import com.timprogrammiert.exceptions.NotADirectoryException;
 
 import java.util.*;
@@ -24,11 +25,11 @@ public abstract class BaseFileSystemObject {
         this.name = name;
     }
 
-    public BaseFileSystemObject getSpecificChildren(String childrenName) throws NotADirectoryException {
+    public BaseFileSystemObject getSpecificChildren(String childrenName) throws FileNotExistsException {
         if(this instanceof DirectoryObject){
             return children.get(childrenName);
         }else {
-            throw new NotADirectoryException(this.getName());
+            throw new FileNotExistsException();
         }
 
     }
