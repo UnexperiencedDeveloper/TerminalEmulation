@@ -80,7 +80,7 @@ public class LsCommand implements ICommand {
         try {
             if(baseItem instanceof DirectoryObject baseDirectory)
             {
-                Collection<BaseFileSystemObject> children = baseDirectory.getAllChilldren();
+                Collection<BaseFileSystemObject> children = baseDirectory.getAllChildren();
                 for (BaseFileSystemObject object: children) {
                     printInformation(object.getName());
                 }

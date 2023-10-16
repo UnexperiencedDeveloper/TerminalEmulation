@@ -27,14 +27,7 @@ public class DirectoryObject extends BaseFileSystemObject {
         children.put(fileToAdd.getName(), fileToAdd);
     }
 
-    public BaseFileSystemObject getSpecificChildren(String childrenName) throws FileNotExistsException {
-
-        BaseFileSystemObject returnObject = children.get(childrenName);
-        if(returnObject == null) throw new FileNotExistsException();
-        return returnObject;
-    }
-
-    public Collection<BaseFileSystemObject> getAllChilldren(){
+    public Collection<BaseFileSystemObject> getAllChildren(){
         return children.values();
     }
 }
