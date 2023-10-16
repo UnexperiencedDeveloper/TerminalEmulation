@@ -73,5 +73,35 @@ public class DirectoryInfo {
         return new ArrayList<>(Arrays.asList(subDirectories));
     }
 
+    /**
+     * Used to get the File / Directory with a Single Relative Path like
+     * e.g. current Path is /etc, requested File is /etc/FileName
+     * @param childrenName the Children File / Directory requested
+     * @param host The host the children belongs to
+     * @return The requested File / Directory, Returns NULL if the requested File / Directory does not exist
+     * @throws FileNotExistsException
+     */
+    public static BaseFileSystemObject resolveSingleRelativePath(String childrenName, Host host) throws FileNotExistsException {
+        return host.getCurrentDirectory().getSpecificChildren(childrenName);
+    }
+
+    /**
+     * Used to get the File / Directory with a Multi Relative Path like
+     * e.g. current Path is /etc, requested File is /etc/anotherDirectory/FileName
+     * @param argList Relative Path as a List
+     * @param host
+     * @return The Requested File / Directory
+     * @throws FileNotExistsException
+     */
+    public static BaseFileSystemObject resolveMultiRelativePath(List<String> argList, Host host) throws FileNotExistsException {
+        String[] subDirectoriesStrings = argList.get(0).split("/");
+        BaseFileSystemObject recursiveDir = host.getCurrentDirectory();
+        for (String dirName: subDirectoriesStrings) {
+            recursiveDir = recursiveDir.getSpecificChildren(dirName);
+            if(recursiveDir == null) throw new FileNotExistsException();
+        }
+        return recursiveDir;
+    }
+
 }
 
