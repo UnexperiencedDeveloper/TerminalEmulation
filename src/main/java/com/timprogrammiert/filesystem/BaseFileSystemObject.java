@@ -24,20 +24,12 @@ public abstract class BaseFileSystemObject {
         this.parent = parent;
         this.name = name;
     }
-
     public BaseFileSystemObject getSpecificChildren(String childrenName) throws FileNotExistsException {
-        if(this instanceof DirectoryObject){
-            return children.get(childrenName);
-        }else {
-            throw new FileNotExistsException();
-        }
 
+        BaseFileSystemObject returnObject = children.get(childrenName);
+        if(returnObject == null) throw new FileNotExistsException();
+        return returnObject;
     }
-
-    public Collection<BaseFileSystemObject> getAllChilldren(){
-        return children.values();
-    }
-
     public String getName(){
         return name;
     }
@@ -45,23 +37,6 @@ public abstract class BaseFileSystemObject {
         this.name = name;
     }
 
-    /*
-    public void addNewDirectory(BaseFileSystemObject dirToAdd){
-        if(this instanceof DirectoryObject){
-            dirToAdd.setParent(this);
-            children.put(dirToAdd.getName(), dirToAdd);
-        }else {
-            throw new UnsupportedOperationException(this.getName() + " is a File");
-        }
-    }*/
-/*
-    public void addNewFile(BaseFileSystemObject fileToAdd) {
-        if(this instanceof DirectoryObject){
-            children.put(fileToAdd.getName(), fileToAdd);
-        }else {
-            throw new UnsupportedOperationException(this.getName() + " is a File");
-        }
-    }*/
 
     public BaseFileSystemObject getParent(){
         return parent;
