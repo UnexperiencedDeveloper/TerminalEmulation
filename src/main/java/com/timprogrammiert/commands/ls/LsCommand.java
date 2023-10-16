@@ -7,7 +7,6 @@ import com.timprogrammiert.filesystem.BaseFileSystemObject;
 import com.timprogrammiert.filesystem.DirectoryObject;
 import com.timprogrammiert.host.Host;
 import com.timprogrammiert.util.DirectoryInfo;
-import com.timprogrammiert.util.PathResolver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +58,7 @@ public class LsCommand implements ICommand {
         listAllChildren(DirectoryInfo.getFileSystemByAbsolutPath(subDirectories, host));
     }
     private void resolveSingleRelativePath(List<String> argList) throws NotADirectoryException, FileNotExistsException {
-        listAllChildren(PathResolver.resolveSingleRelativePath(argList.get(0), host));
+        listAllChildren(DirectoryInfo.resolveSingleRelativePath(argList.get(0), host));
     }
 
     /**
@@ -67,7 +66,7 @@ public class LsCommand implements ICommand {
      */
     private void resolveMultiRelativePath(List<String> argList) throws NotADirectoryException, FileNotExistsException {
 
-        listAllChildren(PathResolver.resolveMultiRelativePath(argList, host));
+        listAllChildren(DirectoryInfo.resolveMultiRelativePath(argList, host));
     }
 
     private List<String> parseArgumentsForTags(List<String> argList){
