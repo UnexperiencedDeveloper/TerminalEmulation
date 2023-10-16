@@ -1,4 +1,6 @@
 package com.timprogrammiert.commands;
+import com.timprogrammiert.commands.cd.CdCommand;
+import com.timprogrammiert.commands.ls.LsCommand;
 import com.timprogrammiert.host.Host;
 import java.util.*;
 
@@ -21,6 +23,7 @@ public class CommandParser {
     private void initCommands(){
         commandMap = new HashMap<>();
         commandMap.put("ls", new LsCommand());
+        commandMap.put("cd", new CdCommand());
     }
 
     private String[] substractCommandName(String[] args){
