@@ -1,7 +1,5 @@
 package com.timprogrammiert.filesystem;
 
-import com.timprogrammiert.util.DirectoryInfo;
-
 /**
  * @author tmatz
  */
@@ -32,6 +30,6 @@ public class VirtualFileSystem {
     }
 
     public DirectoryObject getRootFileSystem(){
-        return (DirectoryObject) rootObject;
+        return rootObject;
     }
 }
