@@ -2,11 +2,11 @@ package com.timprogrammiert.commands.ls;
 
 import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.exceptions.FileNotExistsException;
-import com.timprogrammiert.exceptions.NotADirectoryException;
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
 import com.timprogrammiert.filesystem.DirectoryObject;
 import com.timprogrammiert.host.Host;
 import com.timprogrammiert.util.DirectoryInfo;
+import com.timprogrammiert.util.ErrorValues;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,9 +22,9 @@ public class LsCommand implements ICommand {
     @Override
     public void execute(String[] args, Host userHost){
         host = userHost;
-        try {
-            List<String> argList = parseArgumentsForTags(new ArrayList<>(Arrays.asList(args)));
+        List<String> argList = parseArgumentsForTags(new ArrayList<>(Arrays.asList(args)));
 
+        try {
             if(argList.isEmpty()){
                 listCurrentDirectory();
             }  else if(argList.get(0).equals("/")){
@@ -39,34 +39,31 @@ public class LsCommand implements ICommand {
                     resolveMultiRelativePath(argList);
                 }
             }
+        }catch (FileNotExistsException e){
+            printInformation(ErrorValues.FILE_NOT_EXIST);
         }
-        catch (NotADirectoryException | FileNotExistsException e){
-            System.out.println(e.getMessage());
+        catch (ClassCastException e){
+            System.out.println("Wrong Type, ClassCastException");
         }
 
     }
 
 
-    private void listCurrentDirectory() throws NotADirectoryException, FileNotExistsException {
+    private void listCurrentDirectory() throws FileNotExistsException {
         listAllChildren(host.getCurrentDirectory());
     }
-    private void listRootDirectory() throws NotADirectoryException, FileNotExistsException {
+    private void listRootDirectory() throws FileNotExistsException {
         listAllChildren(host.getRootFileSystem());
     }
-    private void resolveTargetDirectory(List<String> argList) throws NotADirectoryException, FileNotExistsException {
+    private void resolveTargetDirectory(List<String> argList) throws FileNotExistsException, ClassCastException {
         List<String> subDirectories = DirectoryInfo.pathToArray(argList.get(0));
-        listAllChildren(DirectoryInfo.getFileSystemByAbsolutPath(subDirectories, host));
+        listAllChildren(DirectoryInfo.getFileSystemByAbsolutPath(subDirectories, host, DirectoryObject.class));
     }
-    private void resolveSingleRelativePath(List<String> argList) throws NotADirectoryException, FileNotExistsException {
-        listAllChildren(DirectoryInfo.resolveSingleRelativePath(argList.get(0), host));
+    private void resolveSingleRelativePath(List<String> argList) throws FileNotExistsException, ClassCastException {
+        listAllChildren(DirectoryInfo.resolveSingleRelativePath(argList.get(0), host, DirectoryObject.class));
     }
-
-    /**
-     * Used to list Files with a Relative Path of multiple Directories
-     */
-    private void resolveMultiRelativePath(List<String> argList) throws NotADirectoryException, FileNotExistsException {
-
-        listAllChildren(DirectoryInfo.resolveMultiRelativePath(argList, host));
+    private void resolveMultiRelativePath(List<String> argList) throws FileNotExistsException, ClassCastException {
+        listAllChildren(DirectoryInfo.resolveMultiRelativePath(argList.get(0), host, DirectoryObject.class));
     }
 
     private List<String> parseArgumentsForTags(List<String> argList){
@@ -76,7 +73,7 @@ public class LsCommand implements ICommand {
         }
         return argList;
     }
-    private void listAllChildren(BaseFileSystemObject baseItem) throws NotADirectoryException, FileNotExistsException {
+    private void listAllChildren(BaseFileSystemObject baseItem) throws FileNotExistsException {
         try {
             if(baseItem instanceof DirectoryObject baseDirectory)
             {
@@ -85,12 +82,11 @@ public class LsCommand implements ICommand {
                     printInformation(object.getName());
                 }
             }else {
-                throw new NotADirectoryException(baseItem.getName());
+                printInformation(baseItem.getName() + ErrorValues.NOT_A_DIRECTORY);
             }
         }catch (NullPointerException e){
             throw new FileNotExistsException();
         }
-
     }
 
     private void printInformation(String information){
