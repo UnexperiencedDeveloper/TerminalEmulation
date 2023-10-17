@@ -5,7 +5,7 @@ import com.timprogrammiert.exceptions.FileNotExistsException;
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
 import com.timprogrammiert.filesystem.DirectoryObject;
 import com.timprogrammiert.host.Host;
-import com.timprogrammiert.util.DirectoryInfo;
+import com.timprogrammiert.util.DirectoryUtil;
 import com.timprogrammiert.util.ErrorValues;
 
 import java.util.ArrayList;
@@ -56,14 +56,14 @@ public class LsCommand implements ICommand {
         listAllChildren(host.getRootFileSystem());
     }
     private void resolveTargetDirectory(List<String> argList) throws FileNotExistsException, ClassCastException {
-        List<String> subDirectories = DirectoryInfo.pathToArray(argList.get(0));
-        listAllChildren(DirectoryInfo.getFileSystemByAbsolutPath(subDirectories, host, DirectoryObject.class));
+        List<String> subDirectories = DirectoryUtil.pathToArray(argList.get(0));
+        listAllChildren(DirectoryUtil.getFileSystemByAbsolutPath(subDirectories, host, DirectoryObject.class));
     }
     private void resolveSingleRelativePath(List<String> argList) throws FileNotExistsException, ClassCastException {
-        listAllChildren(DirectoryInfo.resolveSingleRelativePath(argList.get(0), host, DirectoryObject.class));
+        listAllChildren(DirectoryUtil.resolveSingleRelativePath(argList.get(0), host, DirectoryObject.class));
     }
     private void resolveMultiRelativePath(List<String> argList) throws FileNotExistsException, ClassCastException {
-        listAllChildren(DirectoryInfo.resolveMultiRelativePath(argList.get(0), host, DirectoryObject.class));
+        listAllChildren(DirectoryUtil.resolveMultiRelativePath(argList.get(0), host, DirectoryObject.class));
     }
 
     private List<String> parseArgumentsForTags(List<String> argList){
