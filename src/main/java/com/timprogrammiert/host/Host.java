@@ -3,7 +3,8 @@ package com.timprogrammiert.host;
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
 import com.timprogrammiert.filesystem.DirectoryObject;
 import com.timprogrammiert.filesystem.VirtualFileSystem;
-import com.timprogrammiert.user.User;
+import com.timprogrammiert.filesystem.permission.User;
+import com.timprogrammiert.filesystem.permission.UserGroup;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public class Host {
     private final VirtualFileSystem virtualFileSystem;
     private BaseFileSystemObject currentDirectory;
     private List<User> users;
+    private List<UserGroup> userGroups;
     private User currentUser;
 
     public Host() {
@@ -33,5 +35,11 @@ public class Host {
 
     public BaseFileSystemObject getRootFileSystem(){
        return virtualFileSystem.getRootFileSystem();
+    }
+    public User getCurrentUser(){return currentUser;}
+
+    private void initTestUser(){
+        User testUser = new User();
+        currentUser = testUser;
     }
 }
