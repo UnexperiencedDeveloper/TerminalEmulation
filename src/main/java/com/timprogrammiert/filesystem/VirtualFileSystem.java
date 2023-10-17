@@ -26,6 +26,9 @@ public class VirtualFileSystem {
 
         FileObject anotherTestDir = new FileObject("AnotherTest", "Content",testDirectory);
         testDirectory.addNewFile(anotherTestDir);
+
+        FileObject testFileObject = new FileObject("testFile", "Content", rootObject);
+        rootObject.addNewFile(testFileObject);
     }
 
     public DirectoryObject getRootFileSystem(){
