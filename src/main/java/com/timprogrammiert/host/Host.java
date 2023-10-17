@@ -6,7 +6,7 @@ import com.timprogrammiert.filesystem.VirtualFileSystem;
 import com.timprogrammiert.filesystem.permission.User;
 import com.timprogrammiert.filesystem.permission.UserGroup;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * @author tmatz
@@ -14,15 +14,21 @@ import java.util.List;
 public class Host {
     private final VirtualFileSystem virtualFileSystem;
     private BaseFileSystemObject currentDirectory;
-    private List<User> users;
-    private List<UserGroup> userGroups;
+    // Element 0 is always root user
+    private Map<String,User> users;
+    private Map<String, UserGroup> userGroups;
     private User currentUser;
 
     public Host() {
-        virtualFileSystem = new VirtualFileSystem();
+        users = new HashMap<>();
+        userGroups = new HashMap<>();
+        addNewUser(new User("root"));
+        initTestUser();
+        virtualFileSystem = new VirtualFileSystem(this);
 
         // On startup start on root directory
         currentDirectory = virtualFileSystem.getRootFileSystem();
+
     }
 
     public DirectoryObject getCurrentDirectory() {
@@ -38,8 +44,25 @@ public class Host {
     }
     public User getCurrentUser(){return currentUser;}
 
+    public void addNewUser(User newUser){
+        users.put(newUser.getUserName(), newUser);
+    }
+    public Optional<User> getUserByName(String userName){
+        if(users.containsKey(userName)){
+            return Optional.ofNullable(users.get(userName));
+        }else {
+            return Optional.empty();
+        }
+    }
+    public void addNewGroup(UserGroup newUserGroup){
+        userGroups.put(newUserGroup.getGroupName(), newUserGroup);
+    }
+
     private void initTestUser(){
-        User testUser = new User();
-        currentUser = testUser;
+        currentUser = new User("Tim");
+    }
+
+    private void switchTestUser(){
+        currentUser = new User("Thorsten");
     }
 }
