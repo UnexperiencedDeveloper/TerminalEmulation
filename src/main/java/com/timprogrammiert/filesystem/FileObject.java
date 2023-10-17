@@ -2,7 +2,6 @@ package com.timprogrammiert.filesystem;
 
 import com.timprogrammiert.filesystem.permission.Permission;
 import com.timprogrammiert.filesystem.permission.User;
-import com.timprogrammiert.filesystem.util.PermissionCreater;
 
 /**
  * @author tmatz
@@ -21,7 +20,7 @@ public class FileObject extends BaseFileSystemObject{
     }
 
     public FileObject(String name, String content, BaseFileSystemObject parent, User userOwner) {
-        super(parent,name, new Permission(userOwner, PermissionCreater.DEFAULT_FILE_PERMISSION));
+        super(parent,name, new Permission(userOwner, Permission.DEFAULT_FILE_PERMISSION));
         this.content = content;
     }
 
