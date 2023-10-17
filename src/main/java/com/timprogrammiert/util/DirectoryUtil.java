@@ -1,9 +1,7 @@
 package com.timprogrammiert.util;
 
 import com.timprogrammiert.exceptions.FileNotExistsException;
-import com.timprogrammiert.exceptions.NotADirectoryException;
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
-import com.timprogrammiert.filesystem.DirectoryObject;
 import com.timprogrammiert.host.Host;
 
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ import java.util.List;
 /**
  * @author tmatz
  */
-public class DirectoryInfo {
+public class DirectoryUtil {
     public static String getAbsolutePathByFileSystem(BaseFileSystemObject fileSystemObject){
             BaseFileSystemObject parent = fileSystemObject;
             List<String> allParents = new ArrayList<>();
