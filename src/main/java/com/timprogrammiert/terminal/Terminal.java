@@ -2,7 +2,7 @@ package com.timprogrammiert.terminal;
 
 import com.timprogrammiert.commands.CommandParser;
 import com.timprogrammiert.host.Host;
-import com.timprogrammiert.util.DirectoryInfo;
+import com.timprogrammiert.util.DirectoryUtil;
 
 import java.util.Scanner;
 
@@ -22,7 +22,7 @@ public class Terminal {
         Scanner scanner = new Scanner(System.in);
         String input = null;
         while (true){
-            System.out.print(DirectoryInfo.getAbsolutePathByFileSystem(host.getCurrentDirectory()) + " ");
+            System.out.print(DirectoryUtil.getAbsolutePathByFileSystem(host.getCurrentDirectory()) + " ");
             input = scanner.nextLine();
             String[] commandInput = input.split(" ");
             commandParser.parseCommand(commandInput);
