@@ -1,5 +1,6 @@
 package com.timprogrammiert.filesystem.permission;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -7,6 +8,13 @@ public class User {
     private List<UserGroup> userGroups;
 
 
+    public User(String userName) {
+        this.userName = userName;
+        userGroups = new ArrayList<>();
+        UserGroup defaultGroup = new UserGroup(userName, this);
+        userGroups.add(defaultGroup);
+
+    }
 
     public String getUserName(){
         return userName;
