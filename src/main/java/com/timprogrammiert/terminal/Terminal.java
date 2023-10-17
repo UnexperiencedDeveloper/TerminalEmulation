@@ -1,9 +1,8 @@
 package com.timprogrammiert.terminal;
 
 import com.timprogrammiert.commands.CommandParser;
-import com.timprogrammiert.filesystem.permission.User;
 import com.timprogrammiert.host.Host;
-import com.timprogrammiert.util.DirectoryUtil;
+import com.timprogrammiert.filesystem.util.DirectoryUtil;
 
 import java.util.Scanner;
 
