@@ -4,8 +4,9 @@ import com.timprogrammiert.commands.ICommand;
 import com.timprogrammiert.exceptions.FileNotExistsException;
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
 import com.timprogrammiert.filesystem.DirectoryObject;
+import com.timprogrammiert.filesystem.util.PermissionChecker;
 import com.timprogrammiert.host.Host;
-import com.timprogrammiert.util.DirectoryUtil;
+import com.timprogrammiert.filesystem.util.DirectoryUtil;
 import com.timprogrammiert.util.ErrorValues;
 
 import java.util.ArrayList;
@@ -73,18 +74,38 @@ public class LsCommand implements ICommand {
         }
         return argList;
     }
+
+    /**
+     * Core Function of the LsCommand
+     * Checks if baseItem is a Directory and recursively lists all Child Objects of this Directory
+     * For each Directory is checked for the ability to read the Directory
+     * @param baseItem The first Directory in the Path
+     * @throws FileNotExistsException
+     */
     private void listAllChildren(BaseFileSystemObject baseItem) throws FileNotExistsException {
+        StringBuilder stringBuilder = new StringBuilder();
+        PermissionChecker pemChecker;
         try {
             if(baseItem instanceof DirectoryObject baseDirectory)
             {
                 Collection<BaseFileSystemObject> children = baseDirectory.getAllChildren();
                 for (BaseFileSystemObject object: children) {
-                    printInformation(object.getName());
+
+                    pemChecker = new PermissionChecker(object, host.getCurrentUser());
+                    if(pemChecker.canRead){
+                        stringBuilder.append(object.getName()).append("\n");
+                    }
+                    else {
+                        System.out.println("Should be an Exception! Permission denied!");
+                        return;
+                    }
                 }
+                printInformation(stringBuilder.toString().strip());
             }else {
                 printInformation(baseItem.getName() + ErrorValues.NOT_A_DIRECTORY);
             }
         }catch (NullPointerException e){
+            e.printStackTrace();
             throw new FileNotExistsException();
         }
     }
