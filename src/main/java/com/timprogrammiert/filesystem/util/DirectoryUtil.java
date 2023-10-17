@@ -1,4 +1,4 @@
-package com.timprogrammiert.util;
+package com.timprogrammiert.filesystem.util;
 
 import com.timprogrammiert.exceptions.FileNotExistsException;
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
