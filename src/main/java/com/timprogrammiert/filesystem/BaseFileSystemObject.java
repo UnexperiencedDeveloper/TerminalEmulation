@@ -2,9 +2,6 @@ package com.timprogrammiert.filesystem;
 
 import com.timprogrammiert.exceptions.FileNotExistsException;
 import com.timprogrammiert.filesystem.permission.Permission;
-import com.timprogrammiert.util.PermissionCreater;
-import com.timprogrammiert.filesystem.permission.User;
-import com.timprogrammiert.filesystem.permission.UserGroup;
 
 import java.util.*;
 
@@ -15,11 +12,9 @@ public abstract class BaseFileSystemObject {
     public final Map<String, BaseFileSystemObject> children;
     private BaseFileSystemObject parent;
     private String name;
-    private User belongsToUser;
-    private UserGroup belongsToUserGroup;
-    private Permission permission;
+    private Permission permissions;
 
-    public BaseFileSystemObject(String name){
+    public BaseFileSystemObject(String name, Permission permission){
         this.children = new HashMap<>();
         this.name = name;
         parent = null;
@@ -31,12 +26,11 @@ public abstract class BaseFileSystemObject {
         this.parent = parent;
         this.name = name;
     }
-    public BaseFileSystemObject(BaseFileSystemObject parent, String name, User userOwner) {
+    public BaseFileSystemObject(BaseFileSystemObject parent, String name, Permission permission) {
         this.children = new HashMap<>();
         this.parent = parent;
         this.name = name;
-        this.belongsToUser = userOwner;
-        initPermission();
+        this.permissions = permission;
     }
     public BaseFileSystemObject getSpecificChildren(String childrenName) throws FileNotExistsException {
 
@@ -60,8 +54,7 @@ public abstract class BaseFileSystemObject {
         this.parent = parentObject;
     }
 
-    private void initPermission(){
-        permission = PermissionCreater.createStandardPermission();
+    public Permission getPermissions() {
+        return permissions;
     }
-
 }
