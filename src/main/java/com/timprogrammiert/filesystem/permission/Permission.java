@@ -1,7 +1,5 @@
 package com.timprogrammiert.filesystem.permission;
 
-import com.timprogrammiert.filesystem.util.PermissionCreater;
-
 /**
  * Represent the Persmissions for each File / Directory
  */
