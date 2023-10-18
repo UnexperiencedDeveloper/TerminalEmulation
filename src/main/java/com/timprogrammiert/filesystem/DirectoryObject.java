@@ -21,7 +21,7 @@ public class DirectoryObject extends BaseFileSystemObject {
 
     public void addNewDirectory(DirectoryObject directoryToAdd){
         // TODO CHECK IF DIRECTORY ALREDY EXISTS
-        directoryToAdd.setParent(directoryToAdd);
+        directoryToAdd.setParent(this);
         children.put(directoryToAdd.getName(), directoryToAdd);
     }
     public void addNewFile(FileObject fileToAdd){
