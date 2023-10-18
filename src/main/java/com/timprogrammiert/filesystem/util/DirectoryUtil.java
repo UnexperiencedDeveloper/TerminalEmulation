@@ -56,7 +56,7 @@ public class DirectoryUtil {
      */
     public static <T extends BaseFileSystemObject> T getFileSystemByAbsolutPath(List<String> subDir, Host host, Class<T> childType) throws
             ClassCastException, FileNotExistsException {
-        if(subDir.get(0).isEmpty()) subDir.remove(0);
+        //if(subDir.get(0).isEmpty()) subDir.remove(0);
         BaseFileSystemObject objectToSearch = host.getRootFileSystem();
 
         for (String subDirectory: subDir) {
@@ -98,16 +98,15 @@ public class DirectoryUtil {
     /**
      * The PathString gets converted into an Array, splitted by "/" as SubDirectory
      * Each subDirectory is searched in the Children List of the current looped Directory
-     * @param pathString the relative Path to the Object (e.g path/to/file)
+     * @param subDirectoriesStrings the relative Path to the Object (e.g path/to/file) as List. Use PathToArray
      * @param host The Host the Filesystem belongs to
      * @param childType The Type the Children belongs to (DirectoryObject, FileObject)
      * @return The Children, if its an Instance of the specified Class
      * @throws FileNotExistsException Is thrown by BaseFileSystemObject when the Object is Null
      * @throws ClassCastException Is thrown when the Specified Class does not match with the Found Object
      */
-    public static <T extends BaseFileSystemObject> T resolveMultiRelativePath(String pathString, Host host, Class<T> childType)
+    public static <T extends BaseFileSystemObject> T resolveMultiRelativePath(List<String> subDirectoriesStrings, Host host, Class<T> childType)
             throws FileNotExistsException, ClassCastException {
-        String[] subDirectoriesStrings = pathString.split("/");
         BaseFileSystemObject recursiveDir = host.getCurrentDirectory();
         for (String dirName: subDirectoriesStrings) {
             recursiveDir = recursiveDir.getSpecificChildren(dirName);

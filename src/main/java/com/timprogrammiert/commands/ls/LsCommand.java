@@ -64,7 +64,7 @@ public class LsCommand implements ICommand {
         listAllChildren(DirectoryUtil.resolveSingleRelativePath(argList.get(0), host, DirectoryObject.class));
     }
     private void resolveMultiRelativePath(List<String> argList) throws FileNotExistsException, ClassCastException {
-        listAllChildren(DirectoryUtil.resolveMultiRelativePath(argList.get(0), host, DirectoryObject.class));
+        listAllChildren(DirectoryUtil.resolveMultiRelativePath(DirectoryUtil.pathToArray(argList.get(0)), host, DirectoryObject.class));
     }
 
     private List<String> parseArgumentsForTags(List<String> argList){
