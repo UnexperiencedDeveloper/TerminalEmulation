@@ -28,8 +28,6 @@ public class PermissionChecker {
             // User is part of File owning Group
             setPermissions(groupPermission);
         } else {
-            System.out.println("File owner: " + baseFileSystemObject.getPermissions().getUser().getUserName());
-            System.out.println("Current user: " + currentUser.getUserName());
             setPermissions(otherPermission);
         }
 

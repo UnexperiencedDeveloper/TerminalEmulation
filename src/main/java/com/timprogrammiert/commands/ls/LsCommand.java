@@ -44,7 +44,7 @@ public class LsCommand implements ICommand {
             printInformation(ErrorValues.FILE_NOT_EXIST);
         }
         catch (ClassCastException e){
-            System.out.println("Wrong Type, ClassCastException");
+            System.out.println(ErrorValues.NOT_A_DIRECTORY);
         }
 
     }
@@ -102,7 +102,7 @@ public class LsCommand implements ICommand {
                 }
                 printInformation(stringBuilder.toString().strip());
             }else {
-                printInformation(baseItem.getName() + ErrorValues.NOT_A_DIRECTORY);
+                printInformation(ErrorValues.NOT_A_DIRECTORY);
             }
         }catch (NullPointerException e){
             e.printStackTrace();

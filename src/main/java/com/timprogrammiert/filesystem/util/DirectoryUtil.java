@@ -56,7 +56,8 @@ public class DirectoryUtil {
      */
     public static <T extends BaseFileSystemObject> T getFileSystemByAbsolutPath(List<String> subDir, Host host, Class<T> childType) throws
             ClassCastException, FileNotExistsException {
-        //if(subDir.get(0).isEmpty()) subDir.remove(0);
+        // There's sometimes an emtpy Element [, etc] due to Split Function
+        if(subDir.get(0).isEmpty()) subDir.remove(0);
         BaseFileSystemObject objectToSearch = host.getRootFileSystem();
 
         for (String subDirectory: subDir) {

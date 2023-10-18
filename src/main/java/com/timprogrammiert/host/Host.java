@@ -22,11 +22,12 @@ public class Host {
     public Host() {
         users = new HashMap<>();
         userGroups = new HashMap<>();
+
         addNewUser(new User("root"));
         initTestUser();
-        virtualFileSystem = new VirtualFileSystem(this);
 
         // On startup start on root directory
+        virtualFileSystem = new VirtualFileSystem(this);
         currentDirectory = virtualFileSystem.getRootFileSystem();
 
     }
@@ -60,9 +61,5 @@ public class Host {
 
     private void initTestUser(){
         currentUser = new User("Tim");
-    }
-
-    private void switchTestUser(){
-        currentUser = new User("Thorsten");
     }
 }

@@ -7,8 +7,8 @@ public class Permission {
     public static String DEFAULT_FILE_PERMISSION = "rw-rw-rw-";
     public static String DEFAULT_DIRECTORY_PERMISSION = "rwxrwxrwx";
     private String permissionString;
-    private User user;
-    private UserGroup userGroup;
+    private final User user;
+    private final UserGroup userGroup;
 
     /**
      * Creates a new Permission Object, can be attached to a File / Directory Object
