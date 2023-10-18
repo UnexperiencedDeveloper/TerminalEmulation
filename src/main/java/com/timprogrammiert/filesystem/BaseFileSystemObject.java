@@ -18,6 +18,7 @@ public abstract class BaseFileSystemObject {
         this.children = new HashMap<>();
         this.name = name;
         parent = null;
+        this.permissions = permission;
         // TODO user should be set
     }
 
