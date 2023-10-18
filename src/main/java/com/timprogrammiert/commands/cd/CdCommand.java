@@ -5,6 +5,7 @@ import com.timprogrammiert.exceptions.FileNotExistsException;
 import com.timprogrammiert.filesystem.BaseFileSystemObject;
 import com.timprogrammiert.filesystem.DirectoryObject;
 import com.timprogrammiert.filesystem.util.DirectoryUtil;
+import com.timprogrammiert.filesystem.util.PermissionChecker;
 import com.timprogrammiert.host.Host;
 import com.timprogrammiert.util.ErrorValues;
 
@@ -35,7 +36,6 @@ public class CdCommand implements ICommand {
                 resolveAbsolutePath(argList);
             } else {
                 if(argList.get(0).split("/").length == 1) {
-                    System.out.println("Arguments: " + argList.get(0));
                     resolveSingleRelativePath(argList);
                 }else {
                     resolveMultiRelativePath(argList);
@@ -45,7 +45,7 @@ public class CdCommand implements ICommand {
             System.out.println(ErrorValues.FILE_NOT_EXIST);
         }
         catch (ClassCastException e){
-            System.out.println("Wrong Type, ClassCastException");
+            System.out.println(ErrorValues.NOT_A_DIRECTORY);
         }
 
     }
@@ -77,6 +77,11 @@ public class CdCommand implements ICommand {
     }
 
     private void changeDirectory(BaseFileSystemObject directoryToCd){
-        host.setCurrentDirectory(directoryToCd);
+        PermissionChecker pemChecker = new PermissionChecker(directoryToCd, host.getCurrentUser());
+        // Directory needs Permission to execute
+        if(pemChecker.canExecute){
+            host.setCurrentDirectory(directoryToCd);
+        }
+
     }
 }
